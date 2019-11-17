@@ -15,11 +15,19 @@ http.listen(port, ()=>{
 })
 
 io.on('connection', (socket)=>{
+    // On connected user
     console.log('A user connected');
+
+    // Send message to every users
+    socket.on('chat message', (msg)=>{
+        io.emit('chat message', {
+            user: msg.user,
+            msg: msg.msg
+        });
+    })
+
+    // On disconnected user
     socket.on('disconnect', ()=>{
         console.log('User disconnected');
-    })
-    socket.on('chat message', (msg)=>{
-        io.emit('chat message', msg);
     })
 })
